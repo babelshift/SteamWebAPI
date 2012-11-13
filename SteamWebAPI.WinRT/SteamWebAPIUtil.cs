@@ -60,7 +60,7 @@ namespace SteamWebAPI
             }
         }
 
-        public async Task<SteamServerInfo> GetServerInfo()
+        public async Task<SteamServerInfo> GetServerInfoAsync()
         {
             JObject data = await PerformSteamRequestAsync("ISteamWebAPIUtil", "GetServerInfo", 1);
 

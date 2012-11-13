@@ -13,7 +13,7 @@ namespace SteamWebAPI
         {
         }
 
-        public async Task<List<App>> GetAppList()
+        public async Task<List<App>> GetAppListAsync()
         {
             JObject data = await PerformSteamRequestAsync("ISteamApps", "GetAppList", 2);
 

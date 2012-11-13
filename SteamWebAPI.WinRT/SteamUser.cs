@@ -15,7 +15,7 @@ namespace SteamWebAPI
         {
         }
 
-        public async Task<List<Friend>> GetFriendList(long steamId, string relationship = "")
+        public async Task<List<Friend>> GetFriendListAsync(long steamId, string relationship = "")
         {
             List<WebRequestParameter> requestParameters = new List<WebRequestParameter>();
 
@@ -56,7 +56,7 @@ namespace SteamWebAPI
             }
         }
 
-        public async Task<List<UserBanStatus>> GetPlayerBans(IList<long> steamIds)
+        public async Task<List<UserBanStatus>> GetPlayerBansAsync(IList<long> steamIds)
         {
             List<WebRequestParameter> requestParameters = new List<WebRequestParameter>();
 
@@ -100,7 +100,7 @@ namespace SteamWebAPI
             }
         }
 
-        public async Task<List<UserSummary>> GetPlayerSummaries(List<long> steamIds)
+        public async Task<List<UserSummary>> GetPlayerSummariesAsync(List<long> steamIds)
         {
             List<WebRequestParameter> requestParameters = new List<WebRequestParameter>();
 
@@ -194,7 +194,7 @@ namespace SteamWebAPI
             }
         }
 
-        public async Task<List<Group>> GetUserGroupList(long steamId)
+        public async Task<List<Group>> GetUserGroupListAsync(long steamId)
         {
             List<WebRequestParameter> requestParameters = new List<WebRequestParameter>();
 
@@ -230,7 +230,7 @@ namespace SteamWebAPI
             }
         }
 
-        public async Task<long> ResolveVanityURL(string vanityUrl)
+        public async Task<long> ResolveVanityURLAsync(string vanityUrl)
         {
             List<WebRequestParameter> requestParameters = new List<WebRequestParameter>();
 

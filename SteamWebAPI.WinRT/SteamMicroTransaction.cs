@@ -14,7 +14,7 @@ namespace SteamWebAPI
         {
         }
 
-        public async Task<Cart> CreateCart(long steamId)
+        public async Task<Cart> CreateCartAsync(long steamId)
         {
             List<WebRequestParameter> requestParameters = new List<WebRequestParameter>();
 
@@ -83,7 +83,7 @@ namespace SteamWebAPI
             }
         }
 
-        public async Task<Cart> IsValidCart(long steamId, long cartId)
+        public async Task<Cart> IsValidCartAsync(long steamId, long cartId)
         {
             List<WebRequestParameter> requestParameters = new List<WebRequestParameter>();
 

@@ -24,63 +24,63 @@ namespace SteamWebAPI
 
         #region ISteamUser
 
-        public async Task<List<Friend>> GetFriendList(long steamId, string relationship = "")
+        public async Task<List<Friend>> GetFriendListAsync(long steamId, string relationship = "")
         {
             SteamUser steamUser = new SteamUser(this.developerKey);
-            return await steamUser.GetFriendList(steamId, relationship);
+            return await steamUser.GetFriendListAsync(steamId, relationship);
         }
 
-        public async Task<List<UserBanStatus>> GetPlayerBans(IList<long> steamIds)
+        public async Task<List<UserBanStatus>> GetPlayerBansAsync(IList<long> steamIds)
         {
             SteamUser steamUser = new SteamUser(this.developerKey);
-            return await steamUser.GetPlayerBans(steamIds);
+            return await steamUser.GetPlayerBansAsync(steamIds);
         }
 
-        public async Task<List<UserSummary>> GetPlayerSummaries(List<long> steamIds)
+        public async Task<List<UserSummary>> GetPlayerSummariesAsync(List<long> steamIds)
         {
             SteamUser steamuser = new SteamUser(this.developerKey);
-            return await steamuser.GetPlayerSummaries(steamIds);
+            return await steamuser.GetPlayerSummariesAsync(steamIds);
         }
 
-        public async Task<List<Group>> GetUserGroupList(long steamId)
+        public async Task<List<Group>> GetUserGroupListAsync(long steamId)
         {
             SteamUser steamUser = new SteamUser(this.developerKey);
-            return await steamUser.GetUserGroupList(steamId);
+            return await steamUser.GetUserGroupListAsync(steamId);
         }
 
-        public async Task<long> ResolveVanityURL(string vanityUrl)
+        public async Task<long> ResolveVanityURLAsync(string vanityUrl)
         {
             SteamUser steamUser = new SteamUser(this.developerKey);
-            return await steamUser.ResolveVanityURL(vanityUrl);
+            return await steamUser.ResolveVanityURLAsync(vanityUrl);
         }
 
         #endregion
 
         #region ISteamMicroTxn
 
-        public async Task<Cart> CreateCart(long steamId)
+        public async Task<Cart> CreateCartAsync(long steamId)
         {
             SteamMicroTransaction steamMicroTransaction = new SteamMicroTransaction(this.developerKey);
-            return await steamMicroTransaction.CreateCart(steamId);
+            return await steamMicroTransaction.CreateCartAsync(steamId);
         }
 
-        public async Task<Cart> IsValidCart(long steamId, long cartId)
+        public async Task<Cart> IsValidCartAsync(long steamId, long cartId)
         {
             SteamMicroTransaction steamMicroTransaction = new SteamMicroTransaction(this.developerKey);
-            return await steamMicroTransaction.IsValidCart(steamId, cartId);
+            return await steamMicroTransaction.IsValidCartAsync(steamId, cartId);
         }
 
         #endregion
 
         #region ISteamWebAPIUtil
 
-        public async Task<SteamServerInfo> GetServerInfo()
+        public async Task<SteamServerInfo> GetServerInfoAsync()
         {
             SteamWebAPIUtil steamWebUtil = new SteamWebAPIUtil(this.developerKey);
-            return await steamWebUtil.GetServerInfo();
+            return await steamWebUtil.GetServerInfoAsync();
         }
 
-        public async Task<List<SteamInterface>> GetSupportedInterfaces()
+        public async Task<List<SteamInterface>> GetSupportedInterfacesAsync()
         {
             SteamWebAPIUtil steamWebUtil = new SteamWebAPIUtil(this.developerKey);
             return await steamWebUtil.GetSupportedAPIListAsync();
@@ -134,10 +134,10 @@ namespace SteamWebAPI
 
         #region ISteamApps
 
-        public async Task<List<App>> GetAppList()
+        public async Task<List<App>> GetAppListAsync()
         {
             SteamApps steamApps = new SteamApps(this.developerKey);
-            return await steamApps.GetAppList();
+            return await steamApps.GetAppListAsync();
         }
 
         #endregion
