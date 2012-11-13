@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamWebAPI.WinRT", "SteamWebAPI\SteamWebAPI.WinRT.csproj", "{25E2F8D6-7236-46A6-8BB3-B5675BB98ED0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamWebModel", "SteamWebModel\SteamWebModel.csproj", "{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamWebAPI.WinRT", "SteamWebAPI.WinRT\SteamWebAPI.WinRT.csproj", "{25E2F8D6-7236-46A6-8BB3-B5675BB98ED0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +17,16 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Release|ARM.ActiveCfg = Release|Any CPU
+		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Release|x64.ActiveCfg = Release|Any CPU
+		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Release|x86.ActiveCfg = Release|Any CPU
 		{25E2F8D6-7236-46A6-8BB3-B5675BB98ED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{25E2F8D6-7236-46A6-8BB3-B5675BB98ED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25E2F8D6-7236-46A6-8BB3-B5675BB98ED0}.Debug|ARM.ActiveCfg = Debug|ARM
@@ -33,16 +43,6 @@ Global
 		{25E2F8D6-7236-46A6-8BB3-B5675BB98ED0}.Release|x64.Build.0 = Release|x64
 		{25E2F8D6-7236-46A6-8BB3-B5675BB98ED0}.Release|x86.ActiveCfg = Release|x86
 		{25E2F8D6-7236-46A6-8BB3-B5675BB98ED0}.Release|x86.Build.0 = Release|x86
-		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Release|ARM.ActiveCfg = Release|Any CPU
-		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Release|x64.ActiveCfg = Release|Any CPU
-		{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
