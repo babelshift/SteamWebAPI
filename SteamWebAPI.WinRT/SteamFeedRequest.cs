@@ -76,7 +76,7 @@ namespace SteamWebAPI
                                 feedItem.Link = new Uri(item.Id);
                             }
                         }
-                        else if (feed.SourceFormat == SyndicationFormat.Rss20)
+                        else if (feed.SourceFormat == SyndicationFormat.Rss20 || feed.SourceFormat == SyndicationFormat.Rss10)
                         {
                             if (item.Summary != null && item.Summary.Text != null)
                             {
@@ -87,6 +87,7 @@ namespace SteamWebAPI
                                 feedItem.Link = item.Links[0].Uri;
                             }
                         }
+
                         feedData.Items.Add(feedItem);
                     }
                 }

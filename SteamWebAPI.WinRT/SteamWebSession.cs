@@ -24,31 +24,53 @@ namespace SteamWebAPI
 
         #region ISteamUser
 
-        public async Task<List<Friend>> GetFriendListAsync(long steamId, string relationship = "")
+        public async Task<List<Friend>> GetUserFriendsAsync(long steamId, string relationship = "")
         {
             SteamUser steamUser = new SteamUser(this.developerKey);
             return await steamUser.GetFriendListAsync(steamId, relationship);
         }
 
-        public async Task<List<UserBanStatus>> GetPlayerBansAsync(IList<long> steamIds)
+        public async Task<List<UserBanStatus>> GetUserBansAsync(IList<long> steamIds)
         {
             SteamUser steamUser = new SteamUser(this.developerKey);
             return await steamUser.GetPlayerBansAsync(steamIds);
         }
 
-        public async Task<List<UserSummary>> GetPlayerSummariesAsync(List<long> steamIds)
+        public async Task<UserSummary> GetSummaryForUserAsync(long steamId)
+        {
+            List<UserSummary> userSummaries = await GetSummariesForUsersAsync(new List<long> { steamId });
+            if (userSummaries != null)
+                if (userSummaries.Count > 0)
+                    return userSummaries[0];
+
+            return null;
+        }
+
+        public async Task<List<UserSummary>> GetSummariesForUsersAsync(List<long> steamIds)
         {
             SteamUser steamuser = new SteamUser(this.developerKey);
             return await steamuser.GetPlayerSummariesAsync(steamIds);
         }
 
-        public async Task<List<Group>> GetUserGroupListAsync(long steamId)
+        public async Task<Profile> GetUserProfile(long steamId)
         {
-            SteamUser steamUser = new SteamUser(this.developerKey);
-            return await steamUser.GetUserGroupListAsync(steamId);
+            SteamUser steamuser = new SteamUser(this.developerKey);
+            return await steamuser.GetUserProfile(steamId);
         }
 
-        public async Task<long> ResolveVanityURLAsync(string vanityUrl)
+        //public async Task<List<Group>> GetUserGroupsAsync(long steamId)
+        //{
+        //    SteamUser steamUser = new SteamUser(this.developerKey);
+        //    return await steamUser.GetUserGroupListAsync(steamId);
+        //}
+
+        public async Task<List<Group>> GetUserGroupsAsync(long steamId)
+        {
+            SteamUser steamUser = new SteamUser(this.developerKey);
+            return await steamUser.GetUserGroupsAsync(steamId);
+        }
+
+        public async Task<long> GetSteamID(string vanityUrl)
         {
             SteamUser steamUser = new SteamUser(this.developerKey);
             return await steamUser.ResolveVanityURLAsync(vanityUrl);
@@ -112,13 +134,13 @@ namespace SteamWebAPI
             return await steamUserStats.GetNumberOfCurrentPlayersAsync(appId);
         }
 
-        public async Task<UserAchievements> GetPlayerAchievementsAsync(ulong steamId, uint appId, string language = "")
+        public async Task<UserAchievements> GetUserAchievementsAsync(ulong steamId, uint appId, string language = "")
         {
             SteamUserStats steamUserStats = new SteamUserStats(this.developerKey);
             return await steamUserStats.GetPlayerAchievementsAsync(steamId, appId, language);
         }
 
-        public async Task<GameSchema> GetSchemaForGameAsync(uint appId, string language = "")
+        public async Task<GameSchema> GetGameDetailsAsync(uint appId, string language = "")
         {
             SteamUserStats steamUserStats = new SteamUserStats(this.developerKey);
             return await steamUserStats.GetSchemaForGameAsync(appId, language);

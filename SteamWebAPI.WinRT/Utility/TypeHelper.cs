@@ -31,7 +31,10 @@ namespace SteamWebAPI.Utility
 
         public static DateTime CreateDateTime(JToken token)
         {
-            return DateHelper.UnixToDateTime(CreateLong(token.ToString()));
+            if (token != null)
+                return DateHelper.UnixToDateTime(CreateLong(token.ToString()));
+            else
+                return DateTime.MinValue;
         }
 
         public static bool CreateBoolean(JToken token)

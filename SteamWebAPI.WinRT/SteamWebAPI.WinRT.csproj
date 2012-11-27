@@ -99,6 +99,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="SteamDealsSession.cs" />
     <Compile Include="SteamFeedRequest.cs" />
     <Compile Include="SteamFeedSession.cs" />
     <Compile Include="Utility\DateHelper.cs" />

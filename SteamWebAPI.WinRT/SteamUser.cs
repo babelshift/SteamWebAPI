@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using SteamWebAPI.Utility;
 using SteamWebModel;
+using Windows.Data.Xml.Dom;
 
 namespace SteamWebAPI
 {
@@ -98,6 +99,147 @@ namespace SteamWebAPI
             {
                 throw new Exception(E_JSON_DESERIALIZATION_FAILED);
             }
+        }
+
+        public async Task<Profile> GetUserProfile(long steamId)
+        {
+            XmlDocument profileXml = await PerformXmlSteamRequestAsync("http://steamcommunity.com/profiles/" + steamId.ToString() + "?xml=1");
+            
+            Profile profile = new Profile();
+            if (profileXml.HasChildNodes())
+            {
+                foreach (var rootChild in profileXml.ChildNodes)
+                {
+                    if (rootChild.NodeName == "profile")
+                    {
+                        foreach (var profileChild in rootChild.ChildNodes)
+                        {
+                            if (profileChild.NodeName == "steamID64")
+                                profile.SteamID = Convert.ToInt64(profileChild.InnerText);
+                            else if (profileChild.NodeName == "steamID")
+                                profile.Nickname = profileChild.InnerText;
+                            else if (profileChild.NodeName == "onlineState")
+                                profile.State = profileChild.InnerText;
+                            else if (profileChild.NodeName == "stateMessage")
+                                profile.StateMessage = profileChild.InnerText;
+                            else if (profileChild.NodeName == "visibilityState")
+                                profile.VisibilityState = Convert.ToInt32(profileChild.InnerText);
+                            else if (profileChild.NodeName == "avatarIcon")
+                                profile.Avatar = new Uri(profileChild.InnerText);
+                            else if (profileChild.NodeName == "avatarMedium")
+                                profile.AvatarMedium = new Uri(profileChild.InnerText);
+                            else if (profileChild.NodeName == "avatarFull")
+                                profile.AvatarFull = new Uri(profileChild.InnerText);
+                            else if (profileChild.NodeName == "vacBanned")
+                            {
+                                if (profileChild.InnerText == "0")
+                                    profile.IsVacBanned = false;
+                                else
+                                    profile.IsVacBanned = true;
+                            }
+                            else if (profileChild.NodeName == "tradeBanState")
+                                profile.TradeBanState = profileChild.InnerText;
+                            else if (profileChild.NodeName == "isLimitedAccount")
+                            {
+                                if (profileChild.InnerText == "0")
+                                    profile.IsLimitedAccount = false;
+                                else
+                                    profile.IsLimitedAccount = true;
+                            }
+                            else if (profileChild.NodeName == "customURL")
+                                profile.CustomURL = profileChild.InnerText;
+                            else if (profileChild.NodeName == "memberSince")
+                                profile.MemberSince = profileChild.InnerText;
+                            else if (profileChild.NodeName == "steamRating")
+                                profile.SteamRating = Convert.ToDouble(profileChild.InnerText);
+                            else if (profileChild.NodeName == "hoursPlayed2Wk")
+                                profile.HoursPlayedLastTwoWeeks = Convert.ToDouble(profileChild.InnerText);
+                            else if (profileChild.NodeName == "headline")
+                                profile.Headline = profileChild.InnerText;
+                            else if (profileChild.NodeName == "location")
+                                profile.Location = profileChild.InnerText;
+                            else if (profileChild.NodeName == "realname")
+                                profile.RealName = profileChild.InnerText;
+                            else if (profileChild.NodeName == "summary")
+                                profile.Summary = profileChild.InnerText;
+                            else if (profileChild.NodeName == "mostPlayedGames")
+                            {
+                                if (profileChild.HasChildNodes())
+                                {
+                                    var mostPlayedGames = new List<Profile.MostPlayedGame>();
+                                    // <mostPlayedGames> children
+                                    foreach (var mostPlayedGameNode in profileChild.ChildNodes)
+                                    {
+                                        if (mostPlayedGameNode.NodeName == "mostPlayedGame")
+                                        {
+                                            if (mostPlayedGameNode.HasChildNodes())
+                                            {
+                                                var mostPlayedGame = new SteamWebModel.Profile.MostPlayedGame();
+                                                // <mostPlayedGame> children
+                                                foreach (var mostPlayedGameChild in mostPlayedGameNode.ChildNodes)
+                                                {
+                                                    if (mostPlayedGameChild.NodeName == "gameName")
+                                                        mostPlayedGame.Name = mostPlayedGameChild.InnerText;
+                                                    if (mostPlayedGameChild.NodeName == "gameLink")
+                                                        mostPlayedGame.Link = new Uri(mostPlayedGameChild.InnerText);
+                                                    if (mostPlayedGameChild.NodeName == "gameIcon")
+                                                        mostPlayedGame.Icon = new Uri(mostPlayedGameChild.InnerText);
+                                                    if (mostPlayedGameChild.NodeName == "gameLogo")
+                                                        mostPlayedGame.Logo = new Uri(mostPlayedGameChild.InnerText);
+                                                    if (mostPlayedGameChild.NodeName == "gameLogoSmall")
+                                                        mostPlayedGame.LogoSmall = new Uri(mostPlayedGameChild.InnerText);
+                                                    if (mostPlayedGameChild.NodeName == "hoursPlayed")
+                                                        mostPlayedGame.HoursPlayed = Convert.ToDouble(mostPlayedGameChild.InnerText);
+                                                    if (mostPlayedGameChild.NodeName == "hoursOnRecord")
+                                                        mostPlayedGame.HoursOnRecord = Convert.ToDouble(mostPlayedGameChild.InnerText);
+                                                    if (mostPlayedGameChild.NodeName == "statsName")
+                                                        mostPlayedGame.StatsName = mostPlayedGameChild.InnerText;
+                                                }
+
+                                                mostPlayedGames.Add(mostPlayedGame);
+                                            }
+                                        }
+                                    }
+
+                                    profile.MostPlayedGames = mostPlayedGames;
+                                }
+                            }
+                            else if (profileChild.NodeName == "weblinks")
+                            {
+                                if (profileChild.HasChildNodes())
+                                {
+                                    var webLinks = new List<Profile.WebLink>();
+                                    // <mostPlayedGames> children
+                                    foreach (var webLinkNode in profileChild.ChildNodes)
+                                    {
+                                        if (webLinkNode.NodeName == "weblink")
+                                        {
+                                            if (webLinkNode.HasChildNodes())
+                                            {
+                                                var webLink = new SteamWebModel.Profile.WebLink();
+                                                // <mostPlayedGame> children
+                                                foreach (var webLinkChild in webLinkNode.ChildNodes)
+                                                {
+                                                    if (webLinkChild.NodeName == "link")
+                                                        webLink.Link = new Uri(webLinkChild.InnerText);
+                                                    else if (webLinkChild.NodeName == "title")
+                                                        webLink.Title = webLinkChild.InnerText;
+                                                }
+
+                                                webLinks.Add(webLink);
+                                            }
+                                        }
+                                    }
+
+                                    profile.WebLinks = webLinks;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return profile;
         }
 
         public async Task<List<UserSummary>> GetPlayerSummariesAsync(List<long> steamIds)
@@ -194,41 +336,95 @@ namespace SteamWebAPI
             }
         }
 
-        public async Task<List<Group>> GetUserGroupListAsync(long steamId)
+        public async Task<List<Group>> GetUserGroupsAsync(long steamId)
         {
-            List<WebRequestParameter> requestParameters = new List<WebRequestParameter>();
+            XmlDocument profileXml = await PerformXmlSteamRequestAsync("http://steamcommunity.com/profiles/" + steamId.ToString() + "?xml=1");
+            XmlNodeList groupElements = profileXml.GetElementsByTagName("groups");
+            IXmlNode groupNodes = groupElements.Item(0);
 
-            WebRequestParameter steamIdParameter = new WebRequestParameter("steamid", steamId.ToString());
-            requestParameters.Add(steamIdParameter);
-
-            // send the request and wait for the response
-            JObject data = await PerformSteamRequestAsync("ISteamUser", "GetUserGroupList", 1, requestParameters);
-
-            bool success = TypeHelper.CreateBoolean(data["response"]["success"]);
-            if (!success)
-                throw new Exception(E_HTTP_RESPONSE_RESULT_FAILED);
-
-            try
+            List<Group> steamGroups = new List<Group>();
+            if (groupNodes != null)
             {
-                List<Group> groups = new List<Group>();
-
-                foreach (JObject groupObject in data["response"]["groups"])
+                if (groupNodes.HasChildNodes())
                 {
-                    Group group = new Group()
+                    foreach (var group in groupNodes.ChildNodes)
                     {
-                        ID = TypeHelper.CreateInt(groupObject["gid"])
-                    };
+                        // if this is a "group" node, there will be children, so skip anything without children
+                        if (group.HasChildNodes())
+                        {
+                            Group steamGroup = new Group();
+                            foreach (var groupChild in group.ChildNodes)
+                            {
+                                if (groupChild.NodeName == "groupID64")
+                                    steamGroup.ID = Convert.ToInt64(groupChild.InnerText);
+                                else if (groupChild.NodeName == "groupName")
+                                    steamGroup.Name = groupChild.InnerText;
+                                else if (groupChild.NodeName == "groupURL")
+                                    steamGroup.URL = groupChild.InnerText;
+                                else if (groupChild.NodeName == "headline")
+                                    steamGroup.Headline = groupChild.InnerText;
+                                else if (groupChild.NodeName == "summary")
+                                    steamGroup.Summary = groupChild.InnerText;
+                                else if (groupChild.NodeName == "avatarIcon")
+                                    steamGroup.Avatar = new Uri(groupChild.InnerText);
+                                else if (groupChild.NodeName == "avatarMedium")
+                                    steamGroup.AvatarMedium = new Uri(groupChild.InnerText);
+                                else if (groupChild.NodeName == "avatarFull")
+                                    steamGroup.AvatarFull = new Uri(groupChild.InnerText);
+                                else if (groupChild.NodeName == "memberCount")
+                                    steamGroup.MemberCount = Convert.ToInt32(groupChild.InnerText);
+                                else if (groupChild.NodeName == "membersInChat")
+                                    steamGroup.MemberChatCount = Convert.ToInt32(groupChild.InnerText);
+                                else if (groupChild.NodeName == "membersInGame")
+                                    steamGroup.MemberGameCount = Convert.ToInt32(groupChild.InnerText);
+                                else if (groupChild.NodeName == "membersOnline")
+                                    steamGroup.MemberOnlineCount = Convert.ToInt32(groupChild.InnerText);
+                            }
 
-                    groups.Add(group);
+                            steamGroups.Add(steamGroup);
+                        }
+                    }
                 }
+            }
 
-                return groups;
-            }
-            catch
-            {
-                throw new Exception(E_JSON_DESERIALIZATION_FAILED);
-            }
+            return steamGroups;
         }
+
+        //public async Task<List<Group>> GetUserGroupListAsync(long steamId)
+        //{
+        //    List<WebRequestParameter> requestParameters = new List<WebRequestParameter>();
+
+        //    WebRequestParameter steamIdParameter = new WebRequestParameter("steamid", steamId.ToString());
+        //    requestParameters.Add(steamIdParameter);
+
+        //    // send the request and wait for the response
+        //    JObject data = await PerformSteamRequestAsync("ISteamUser", "GetUserGroupList", 1, requestParameters);
+
+        //    bool success = TypeHelper.CreateBoolean(data["response"]["success"]);
+        //    if (!success)
+        //        throw new Exception(E_HTTP_RESPONSE_RESULT_FAILED);
+
+        //    try
+        //    {
+        //        List<Group> groups = new List<Group>();
+
+        //        foreach (JObject groupObject in data["response"]["groups"])
+        //        {
+        //            Group group = new Group()
+        //            {
+        //                ID = TypeHelper.CreateInt(groupObject["gid"])
+        //            };
+
+        //            groups.Add(group);
+        //        }
+
+        //        return groups;
+        //    }
+        //    catch
+        //    {
+        //        throw new Exception(E_JSON_DESERIALIZATION_FAILED);
+        //    }
+        //}
 
         public async Task<long> ResolveVanityURLAsync(string vanityUrl)
         {

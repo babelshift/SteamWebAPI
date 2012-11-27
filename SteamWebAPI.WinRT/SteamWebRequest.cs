@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using SteamWebModel;
+using Windows.Data.Xml.Dom;
 
 namespace SteamWebAPI
 {
@@ -15,13 +17,51 @@ namespace SteamWebAPI
         protected const string E_HTTP_RESPONSE_PARSE_FAILED = "The request was successful but parsing the response failed.";
         protected const string E_HTTP_RESPONSE_RESULT_FAILED = "The request was successful but the response result indicated an error.";
         protected const string E_JSON_DESERIALIZATION_FAILED = "There was an error while deserializing the JSON data.";
+        protected const string E_HTTP_XML_REQUEST_TIMED_OUT = "The XML request failed after 3 tries.";
         private const string STEAM_WEB_API_BASE_URL = "https://api.steampowered.com:443";
+        private const int TIMES_TO_TRY_XML_REQUEST = 3;
 
         private WebRequestParameter developerKey;
 
         public SteamWebRequest(WebRequestParameter developerKey)
         {
             this.developerKey = developerKey;
+        }
+
+        protected async Task<XmlDocument> PerformXmlSteamRequestAsync(string url)
+        {
+            HttpClient httpClient = new HttpClient();
+            XmlDocument responseXml = new XmlDocument();
+
+            // try to get the xml response 3 times before giving up
+            for (int triesRemaining = TIMES_TO_TRY_XML_REQUEST; triesRemaining > 0; triesRemaining--)
+            {
+                try
+                {
+                    responseXml = await XmlDocument.LoadFromUriAsync(new Uri(url));
+                }
+                catch(Exception e)
+                {
+                    // only throw the exception if the file was not found (which means the server is return an http error
+                    // if it's a file not found exception, continue and try the loop again
+                    if (!(e is FileNotFoundException))
+                        throw new Exception(E_HTTP_REQUEST_FAILED);
+                    else
+                        continue;
+                }
+
+                // the request was successful but the response is empty
+                if (responseXml == null && triesRemaining > 0)
+                    throw new Exception(E_HTTP_RESPONSE_EMPTY);
+                // there are no more request attempts left and the response is still empty, there were no successful requests
+                else if (responseXml == null && triesRemaining == 0)
+                    throw new Exception(E_HTTP_XML_REQUEST_TIMED_OUT);
+
+                // got here without exceptions, the request was successful, break the loop
+                break;
+            }
+
+            return responseXml;
         }
 
         protected async Task<JObject> PerformSteamRequestAsync(string interfaceName, string methodName, int methodVersion)
@@ -48,14 +88,14 @@ namespace SteamWebAPI
                 // above link claims GetStringAsync() is equivalent to calling GetAsync(), checking the HttpResponseMessage for success, and then reading
                 // the Content property of the HttpResponseMessage as a string asynchronously
                 response = await httpClient.GetStringAsync(requestCommand);
-
-                if (String.IsNullOrEmpty(response))
-                    throw new Exception(E_HTTP_RESPONSE_EMPTY);
             }
             catch
             {
                 throw new Exception(E_HTTP_REQUEST_FAILED);
             }
+
+            if (String.IsNullOrEmpty(response))
+                throw new Exception(E_HTTP_RESPONSE_EMPTY);
 
             try
             {

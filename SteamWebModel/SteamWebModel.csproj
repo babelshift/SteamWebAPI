@@ -45,6 +45,7 @@
     <Compile Include="GameSchema.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="LineItem.cs" />
+    <Compile Include="Profile.cs" />
     <Compile Include="UserAchievements.cs" />
     <Compile Include="UserBanStatus.cs" />
     <Compile Include="UserStats.cs" />

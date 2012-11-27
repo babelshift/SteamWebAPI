@@ -51,5 +51,7 @@ namespace SteamWebModel
         public string CountryCode { get; set; }
         public string StateCode { get; set; }
         public int CityCode { get; set; }
+        public string PlayingGameName { get; set; }
+        public long PlayingGameID { get; set; }
     }
 }

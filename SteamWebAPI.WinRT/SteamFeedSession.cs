@@ -25,6 +25,7 @@ namespace SteamWebAPI
             ValveEconomics,
             ValveLinuxTeamBlog,
             TeachWithPortals,
+            SteamStore,
         }
 
         public SteamFeedSession()
@@ -58,6 +59,8 @@ namespace SteamWebAPI
                 feedUri = "http://www.teachwithportals.com/index.php/feed/";
             else if (feed == FeedType.CounterStrikeGo)
                 feedUri = "http://blog.counter-strike.net/index.php/feed/";
+            else if (feed == FeedType.SteamStore)
+                feedUri = "http://store.steampowered.com/feeds/news.xml";
 
             return await steamFeedRequest.GetFeedAsync(feedUri);
         }
