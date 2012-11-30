@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -106,6 +107,48 @@ namespace SteamWebAPI
                 throw new Exception(E_HTTP_RESPONSE_PARSE_FAILED);
             }
         }
+
+        //protected async Task<T> PerformSteamRequestAsync<T>(string interfaceName, string methodName, int methodVersion, List<WebRequestParameter> parameters)
+        //{
+        //    if (parameters == null)
+        //        parameters = new List<WebRequestParameter>();
+
+        //    // make developer API key the first parameter (not required, but just to standardize the requests)
+        //    parameters.Insert(0, this.developerKey);
+
+        //    HttpClient httpClient = new HttpClient();
+        //    string response = String.Empty;
+        //    T result;
+
+        //    try
+        //    {
+        //        string requestCommand = BuildRequestCommand(interfaceName, methodName, methodVersion, parameters);
+
+        //        // http://msdn.microsoft.com/en-us/library/windows/apps/xaml/hh781240.aspx
+        //        // above link claims GetStringAsync() is equivalent to calling GetAsync(), checking the HttpResponseMessage for success, and then reading
+        //        // the Content property of the HttpResponseMessage as a string asynchronously
+        //        response = await httpClient.GetStringAsync(requestCommand);
+        //        MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(response));
+        //        DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(T));
+        //        result = (T)jsonSerializer.ReadObject(ms);
+        //    }
+        //    catch
+        //    {
+        //        throw new Exception(E_HTTP_REQUEST_FAILED);
+        //    }
+
+        //    if (String.IsNullOrEmpty(response))
+        //        throw new Exception(E_HTTP_RESPONSE_EMPTY);
+
+        //    try
+        //    {
+        //        return result;
+        //    }
+        //    catch
+        //    {
+        //        throw new Exception(E_HTTP_RESPONSE_PARSE_FAILED);
+        //    }
+        //}
 
         /// <summary>
         /// Takes values and returns a command string that can be sent to the Steam Web API remote address.

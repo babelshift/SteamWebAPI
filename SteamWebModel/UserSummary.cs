@@ -13,7 +13,8 @@ namespace SteamWebModel
         Busy = 2,
         Away = 3,
         Snooze = 4,
-        Unknown = 5
+        Unknown = 5,
+        InGame = 6
     }
 
     public enum ProfileVisibility

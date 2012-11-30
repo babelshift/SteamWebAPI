@@ -42,7 +42,7 @@ namespace SteamWebAPI
                     Friend friend = new Friend()
                     {
                         SteamID = TypeHelper.CreateLong(friendObject["steamid"]),
-                        Relationship = friendObject["relationship"].ToString(),
+                        Relationship = TypeHelper.CreateString(friendObject["relationship"]),
                         FriendSinceDate = TypeHelper.CreateDateTime(friendObject["friend_since"])
                     };
 
@@ -84,10 +84,10 @@ namespace SteamWebAPI
                 {
                     UserBanStatus playerBan = new UserBanStatus()
                     {
-                        SteamID = Convert.ToInt64(playerBanObject["SteamId"].ToString()),
-                        IsCommunityBanned = Convert.ToBoolean(playerBanObject["CommunityBanned"].ToString()),
-                        IsVACBanned = Convert.ToBoolean(playerBanObject["VACBanned"].ToString()),
-                        EconomyBanType = playerBanObject["EconomyBan"].ToString()
+                        SteamID = TypeHelper.CreateLong(playerBanObject["SteamId"]),
+                        IsCommunityBanned = TypeHelper.CreateBoolean(playerBanObject["CommunityBanned"]),
+                        IsVACBanned = TypeHelper.CreateBoolean(playerBanObject["VACBanned"]),
+                        EconomyBanType = TypeHelper.CreateString(playerBanObject["EconomyBan"])
                     };
 
                     playerBans.Add(playerBan);
@@ -115,7 +115,7 @@ namespace SteamWebAPI
                         foreach (var profileChild in rootChild.ChildNodes)
                         {
                             if (profileChild.NodeName == "steamID64")
-                                profile.SteamID = Convert.ToInt64(profileChild.InnerText);
+                                profile.SteamID = TypeHelper.CreateLong(profileChild.InnerText);
                             else if (profileChild.NodeName == "steamID")
                                 profile.Nickname = profileChild.InnerText;
                             else if (profileChild.NodeName == "onlineState")
@@ -123,7 +123,7 @@ namespace SteamWebAPI
                             else if (profileChild.NodeName == "stateMessage")
                                 profile.StateMessage = profileChild.InnerText;
                             else if (profileChild.NodeName == "visibilityState")
-                                profile.VisibilityState = Convert.ToInt32(profileChild.InnerText);
+                                profile.VisibilityState = TypeHelper.CreateInt(profileChild.InnerText);
                             else if (profileChild.NodeName == "avatarIcon")
                                 profile.Avatar = new Uri(profileChild.InnerText);
                             else if (profileChild.NodeName == "avatarMedium")
@@ -151,9 +151,9 @@ namespace SteamWebAPI
                             else if (profileChild.NodeName == "memberSince")
                                 profile.MemberSince = profileChild.InnerText;
                             else if (profileChild.NodeName == "steamRating")
-                                profile.SteamRating = Convert.ToDouble(profileChild.InnerText);
+                                profile.SteamRating = TypeHelper.CreateDouble(profileChild.InnerText);
                             else if (profileChild.NodeName == "hoursPlayed2Wk")
-                                profile.HoursPlayedLastTwoWeeks = Convert.ToDouble(profileChild.InnerText);
+                                profile.HoursPlayedLastTwoWeeks = TypeHelper.CreateDouble(profileChild.InnerText);
                             else if (profileChild.NodeName == "headline")
                                 profile.Headline = profileChild.InnerText;
                             else if (profileChild.NodeName == "location")
@@ -189,9 +189,9 @@ namespace SteamWebAPI
                                                     if (mostPlayedGameChild.NodeName == "gameLogoSmall")
                                                         mostPlayedGame.LogoSmall = new Uri(mostPlayedGameChild.InnerText);
                                                     if (mostPlayedGameChild.NodeName == "hoursPlayed")
-                                                        mostPlayedGame.HoursPlayed = Convert.ToDouble(mostPlayedGameChild.InnerText);
+                                                        mostPlayedGame.HoursPlayed = TypeHelper.CreateDouble(mostPlayedGameChild.InnerText);
                                                     if (mostPlayedGameChild.NodeName == "hoursOnRecord")
-                                                        mostPlayedGame.HoursOnRecord = Convert.ToDouble(mostPlayedGameChild.InnerText);
+                                                        mostPlayedGame.HoursOnRecord = TypeHelper.CreateDouble(mostPlayedGameChild.InnerText);
                                                     if (mostPlayedGameChild.NodeName == "statsName")
                                                         mostPlayedGame.StatsName = mostPlayedGameChild.InnerText;
                                                 }
@@ -283,6 +283,8 @@ namespace SteamWebAPI
                     playerSummary.ProfileState = TypeHelper.CreateInt(playerSummaryObject["profilestate"]);
                     playerSummary.Nickname = TypeHelper.CreateString(playerSummaryObject["personaname"]);
                     playerSummary.LastLoggedOffDate = TypeHelper.CreateDateTime(playerSummaryObject["lastlogoff"]);
+                    playerSummary.PlayingGameID = TypeHelper.CreateLong(playerSummaryObject["gameid"]);
+                    playerSummary.PlayingGameName = TypeHelper.CreateString(playerSummaryObject["gameextrainfo"]);
 
                     // comment permission can be null if the user sets his permissions to "Friends Only" (I have no idea why)
                     if (playerSummaryObject["commentpermission"] != null)
@@ -307,7 +309,12 @@ namespace SteamWebAPI
                     if (personaState == "0")
                         playerSummary.UserStatus = UserStatus.Offline;
                     else if (personaState == "1")
-                        playerSummary.UserStatus = UserStatus.Online;
+                    {
+                        if (!String.IsNullOrEmpty(playerSummary.PlayingGameName))
+                            playerSummary.UserStatus = UserStatus.InGame;
+                        else
+                            playerSummary.UserStatus = UserStatus.Online;
+                    }
                     else if (personaState == "2")
                         playerSummary.UserStatus = UserStatus.Busy;
                     else if (personaState == "3")
@@ -356,7 +363,7 @@ namespace SteamWebAPI
                             foreach (var groupChild in group.ChildNodes)
                             {
                                 if (groupChild.NodeName == "groupID64")
-                                    steamGroup.ID = Convert.ToInt64(groupChild.InnerText);
+                                    steamGroup.ID = TypeHelper.CreateLong(groupChild.InnerText);
                                 else if (groupChild.NodeName == "groupName")
                                     steamGroup.Name = groupChild.InnerText;
                                 else if (groupChild.NodeName == "groupURL")
@@ -372,13 +379,13 @@ namespace SteamWebAPI
                                 else if (groupChild.NodeName == "avatarFull")
                                     steamGroup.AvatarFull = new Uri(groupChild.InnerText);
                                 else if (groupChild.NodeName == "memberCount")
-                                    steamGroup.MemberCount = Convert.ToInt32(groupChild.InnerText);
+                                    steamGroup.MemberCount = TypeHelper.CreateInt(groupChild.InnerText);
                                 else if (groupChild.NodeName == "membersInChat")
-                                    steamGroup.MemberChatCount = Convert.ToInt32(groupChild.InnerText);
+                                    steamGroup.MemberChatCount = TypeHelper.CreateInt(groupChild.InnerText);
                                 else if (groupChild.NodeName == "membersInGame")
-                                    steamGroup.MemberGameCount = Convert.ToInt32(groupChild.InnerText);
+                                    steamGroup.MemberGameCount = TypeHelper.CreateInt(groupChild.InnerText);
                                 else if (groupChild.NodeName == "membersOnline")
-                                    steamGroup.MemberOnlineCount = Convert.ToInt32(groupChild.InnerText);
+                                    steamGroup.MemberOnlineCount = TypeHelper.CreateInt(groupChild.InnerText);
                             }
 
                             steamGroups.Add(steamGroup);

@@ -13,18 +13,48 @@ namespace SteamWebAPI.Utility
                 return String.Empty;
         }
 
+        public static int CreateInt(string value)
+        {
+            int tempInt = 0;
+            Int32.TryParse(value, out tempInt);
+            return tempInt;
+        }
+
         public static int CreateInt(JToken token)
         {
             if (token != null)
-                return Convert.ToInt32(token.ToString());
+                return CreateInt(token.ToString());
             else
                 return 0;
+        }
+
+        public static long CreateLong(string value)
+        {
+            long tempLong = 0;
+            Int64.TryParse(value, out tempLong);
+            return tempLong;
         }
 
         public static long CreateLong(JToken token)
         {
             if (token != null)
-                return Convert.ToInt64(token.ToString());
+                return CreateLong(token.ToString());
+            else
+                return 0;
+        }
+
+
+        public static double CreateDouble(string value)
+        {
+            double tempDouble = 0;
+            double.TryParse(value, out tempDouble);
+            return tempDouble;
+        }
+
+        public static double CreateDouble(JToken token)
+        {
+            if (token != null)
+                return CreateDouble(token.ToString());
             else
                 return 0;
         }
@@ -37,9 +67,19 @@ namespace SteamWebAPI.Utility
                 return DateTime.MinValue;
         }
 
+        public static bool CreateBoolean(string value)
+        {
+            bool tempBool = false;
+            bool.TryParse(value, out tempBool);
+            return tempBool;
+        }
+
         public static bool CreateBoolean(JToken token)
         {
-            return Convert.ToBoolean(token.ToString());
+            if (token != null)
+                return CreateBoolean(token.ToString());
+            else
+                return false;
         }
 
         public static Uri CreateUri(JToken token)
