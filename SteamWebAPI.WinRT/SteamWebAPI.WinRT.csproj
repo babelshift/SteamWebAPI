@@ -112,6 +112,7 @@
     <Compile Include="SteamWebAPIUtil.cs" />
     <Compile Include="SteamWebRequest.cs" />
     <Compile Include="SteamWebSession.cs" />
+    <Compile Include="Utility\Network.cs" />
     <Compile Include="Utility\TypeHelper.cs" />
   </ItemGroup>
   <ItemGroup>

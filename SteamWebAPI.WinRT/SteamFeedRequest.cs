@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SteamWebAPI.Utility;
 using SteamWebModel;
 using Windows.Web.Syndication;
 
@@ -10,23 +11,29 @@ namespace SteamWebAPI
 {
     public class SteamFeedRequest
     {
+        protected const string E_INTERNET_UNAVAILABLE = "Internet connection is unavailable.";
         protected string E_FEED_REQUEST_FAILED = "An error occurred while handling the feed request. Check the URI.";
 
         public async Task<FeedData> GetFeedAsync(string uri)
         {
-            Windows.Web.Syndication.SyndicationClient client = new SyndicationClient();
-            Uri feedUri = new Uri(uri);
+            if (Network.IsInternetAvailable())
+            {
+                Windows.Web.Syndication.SyndicationClient client = new SyndicationClient();
+                Uri feedUri = new Uri(uri);
 
-            try
-            {
-                SyndicationFeed feed = await client.RetrieveFeedAsync(feedUri);
-                FeedData feedData = DeserializeFeedData(feed);
-                return feedData;
+                try
+                {
+                    SyndicationFeed feed = await client.RetrieveFeedAsync(feedUri);
+                    FeedData feedData = DeserializeFeedData(feed);
+                    return feedData;
+                }
+                catch
+                {
+                    throw new Exception(E_FEED_REQUEST_FAILED);
+                }
             }
-            catch
-            {
-                throw new Exception(E_FEED_REQUEST_FAILED);
-            }
+            else
+                throw new Exception(E_INTERNET_UNAVAILABLE);
         }
 
         private FeedData DeserializeFeedData(SyndicationFeed feed)
