@@ -8,6 +8,10 @@ namespace SteamWebAPI.Utility
 {
     internal static class Network
     {
+        /// <summary>
+        /// Based on the active network adapters, determines if any exist and if they provide for Internet access
+        /// </summary>
+        /// <returns></returns>
         internal static bool IsInternetAvailable()
         {
             var connection = Windows.Networking.Connectivity.NetworkInformation.GetInternetConnectionProfile();
