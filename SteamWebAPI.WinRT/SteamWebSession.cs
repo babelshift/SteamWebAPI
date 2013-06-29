@@ -36,9 +36,9 @@ namespace SteamWebAPI
             return await steamUser.GetPlayerBansAsync(steamIds);
         }
 
-        public async Task<UserSummary> GetSummaryForUserAsync(long steamId)
+        public async Task<UserSummary> GetUserSummaryAsync(long steamId)
         {
-            List<UserSummary> userSummaries = await GetSummariesForUsersAsync(new List<long> { steamId });
+            List<UserSummary> userSummaries = await GetUserSummariesAsync(new List<long> { steamId });
             if (userSummaries != null)
                 if (userSummaries.Count > 0)
                     return userSummaries[0];
@@ -46,7 +46,7 @@ namespace SteamWebAPI
             return null;
         }
 
-        public async Task<List<UserSummary>> GetSummariesForUsersAsync(List<long> steamIds)
+        public async Task<List<UserSummary>> GetUserSummariesAsync(List<long> steamIds)
         {
             SteamUser steamuser = new SteamUser(this.developerKey);
             return await steamuser.GetPlayerSummariesAsync(steamIds);
