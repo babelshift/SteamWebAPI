@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamWebModel", "SteamWebModel\SteamWebModel.csproj", "{FFB4AE5B-22C2-4D9A-AB88-4CA2B6C4B378}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamWebAPI.WinRT", "SteamWebAPI.WinRT\SteamWebAPI.WinRT.csproj", "{25E2F8D6-7236-46A6-8BB3-B5675BB98ED0}"
