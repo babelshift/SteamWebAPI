@@ -324,6 +324,11 @@ namespace SteamWebAPI
                     else
                         playerSummary.UserStatus = UserStatus.Unknown;
 
+                    if (!String.IsNullOrEmpty(playerSummary.PlayingGameName))
+                    {
+                        playerSummary.UserStatus = UserStatus.InGame;
+                    }
+
                     playerSummary.RealName = TypeHelper.CreateString(playerSummaryObject["realname"]);
 
                     playerSummary.PrimaryGroupID = TypeHelper.CreateLong(playerSummaryObject["primaryclanid"]);
