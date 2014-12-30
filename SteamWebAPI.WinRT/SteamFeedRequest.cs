@@ -27,7 +27,7 @@ namespace SteamWebAPI
                     FeedData feedData = DeserializeFeedData(feed);
                     return feedData;
                 }
-                catch(Exception ex)
+                catch
                 {
                     throw new Exception(E_FEED_REQUEST_FAILED);
                 }

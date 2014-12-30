@@ -44,7 +44,7 @@ namespace SteamWebAPI
             else if (feed == FeedType.Left4Dead)
                 feedUri = "http://www.l4d.com/blog/rss.xml";
             else if (feed == FeedType.TeamFortress2)
-                feedUri = "http://www.teamfortress.com/rss.xml";
+                feedUri = "http://tf2.com/rss.xml";
             else if (feed == FeedType.Portal2)
                 feedUri = "http://www.thinkwithportals.com/rss.xml";
             else if (feed == FeedType.SourceFilmmaker)
