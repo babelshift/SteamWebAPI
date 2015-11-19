@@ -1,3 +1,7 @@
+This library has been completely re-written here:
+========
+https://github.com/babelshift/SteamWebAPI2
+
 Steam Web API library
 ========
 
